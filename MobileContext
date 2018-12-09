@@ -1,0 +1,13 @@
+<?php
+use Behat\Behat\Context\Context;
+use Behat\MinkExtension\Context\MinkContext;
+class MobileContext extends FeatureContext implements Context
+{
+    /**
+     * @BeforeStep
+     */
+    public function beforeFeature()
+    {
+        $this->getSession()->resizeWindow(600, 1080, 'current');
+    }
+}
