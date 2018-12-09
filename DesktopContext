@@ -1,0 +1,13 @@
+<?php
+use Behat\Behat\Context\Context;
+use Behat\MinkExtension\Context\MinkContext;
+class DesktopContext extends FeatureContext implements Context
+{
+    /**
+     * @BeforeStep
+     */
+    public function beforeFeature()
+    {
+        $this->getSession()->getDriver()->maximizeWindow();
+    }
+}
