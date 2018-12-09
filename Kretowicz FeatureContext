@@ -1,0 +1,57 @@
+<?php
+use Behat\Behat\Context\Context;
+use Behat\MinkExtension\Context\MinkContext;
+class FeatureContext extends MinkContext implements Context
+{
+    /**
+     * @Then /^I press add to cart products "([^"]*)"$/
+     * @param $productCSSId
+     */
+    public function iPressAddToCartProducts($productCSSId)
+    {
+        $counter = rand(0, 7);
+        $page = $this->getSession()->getPage();
+        $elements = $page->findAll('css', $productCSSId);
+        foreach ($elements as $element) {
+            if ($counter % 7 == 0) {
+                $element->click();
+                $this->getSession()->wait(1500, '(0 === jQuery.active)');
+            }
+            $counter++;
+        }
+    }
+    /**
+     * @Then /^I hold a "([^"]*)" seconds$/
+     * @param $seconds
+     */
+    public function iHoldASeconds($seconds)
+    {
+        $this->getSession()->wait($seconds*1000);
+    }
+    /**
+     * @Given /^I press "([^"]*)" by class$/
+     * @param $cssClass
+     */
+    public function iPressByCssClass($cssClass)
+    {
+        $page = $this->getSession()->getPage();
+        $page->find('css', $cssClass)->press();
+    }
+    /**
+     * @Then /^I press "([^"]*)" by class for "([^"]*)"$/
+     * @param $cssClass
+     * @param $index
+     */
+    public function iPressByClassFor($cssClass, $index)
+    {
+        $counter = 1;
+        $page = $this->getSession()->getPage();
+        foreach ($page->findAll('css', $cssClass) as $element) {
+            if ($index == $counter) {
+                $element->press();
+                return;
+            }
+            $counter++;
+        }
+    }
+}
